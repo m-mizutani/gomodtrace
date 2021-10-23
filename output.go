@@ -30,39 +30,22 @@ func OutputTree(w io.Writer, node *Node) error {
 	if node == nil {
 		w.Write([]byte("not found\n"))
 	}
-	return outputTree(w, node, 0, false)
+	return outputTree(w, node, 0)
 }
 
-func outputTree(w io.Writer, node *Node, margin int, first bool) error {
-	var text string
+func outputTree(w io.Writer, node *Node, margin int) error {
 	var indent string
 	if margin > 0 {
-		if first {
-			text += " <-+- "
-		} else {
-			indent = strings.Repeat(" ", margin)
-			text += "   +- "
-		}
-	}
-	text += node.Name
-
-	if node.Looped {
-		text += " (looped)"
+		indent = strings.Repeat(" ", margin) + "+- "
 	}
 
-	if _, err := w.Write([]byte(indent + text)); err != nil {
+	if _, err := w.Write([]byte(indent + node.Name + "\n")); err != nil {
 		return goerr.Wrap(err)
 	}
 
-	if len(node.DependedBy) == 0 {
-		if _, err := w.Write([]byte("\n")); err != nil {
-			return goerr.Wrap(err)
-		}
-	} else {
-		for _, edge := range node.DependedBy {
-			if err := outputTree(w, edge, margin+len(text), edge == node.DependedBy[0]); err != nil {
-				return err
-			}
+	for _, edge := range node.DependedBy {
+		if err := outputTree(w, edge, margin+2); err != nil {
+			return err
 		}
 	}
 
