@@ -30,13 +30,13 @@ func OutputTree(w io.Writer, node *Node) error {
 	if node == nil {
 		w.Write([]byte("not found\n"))
 	}
-	return outputTree(w, node, 0)
+	return outputTree(w, node, 0, false)
 }
 
-func outputTree(w io.Writer, node *Node, margin int) error {
+func outputTree(w io.Writer, node *Node, margin int, child bool) error {
 	var indent string
-	if margin > 0 {
-		indent = strings.Repeat(" ", margin) + "+- "
+	if child {
+		indent = strings.Repeat(" ", margin) + "+ "
 	}
 
 	if _, err := w.Write([]byte(indent + node.Name + "\n")); err != nil {
@@ -44,7 +44,12 @@ func outputTree(w io.Writer, node *Node, margin int) error {
 	}
 
 	for _, edge := range node.DependedBy {
-		if err := outputTree(w, edge, margin+2); err != nil {
+		nextMargin := margin
+		if child {
+			nextMargin += 2
+		}
+
+		if err := outputTree(w, edge, nextMargin, true); err != nil {
 			return err
 		}
 	}
