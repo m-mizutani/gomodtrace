@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/m-mizutani/zlog"
 	cli "github.com/urfave/cli/v2"
 )
 
-var logger = zlog.New()
+const Version = "v0.1.0"
 
 type App struct {
 	app *cli.App
@@ -18,7 +17,10 @@ func NewApp() *App {
 	var cfg config
 	return &App{
 		app: &cli.App{
-			Name: "gomodtrace",
+			Name:      "gomodtrace",
+			Usage:     "Trace go module dependency by output of go mod graph",
+			Version:   Version,
+			UsageText: "go mod graph | gomodtrace",
 			Flags: []cli.Flag{
 				&cli.StringFlag{
 					Name:        "input",
@@ -32,7 +34,7 @@ func NewApp() *App {
 					Aliases:     []string{"f"},
 					Value:       "tree",
 					Destination: &cfg.Output,
-					Usage:       "Output format",
+					Usage:       "Output format [tree|json]",
 				},
 			},
 			Action: func(c *cli.Context) error {
