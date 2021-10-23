@@ -10,7 +10,7 @@ github.com/kr/text@v0.1.0
     + github.com/m-mizutani/goerr@v0.1.2
       + github.com/m-mizutani/gomodtrace
       + github.com/m-mizutani/zlog@v0.0.0-20211023032251-9e5ad6f1e0dc
-        + github.com/m-mizutani/gomodtrace```
+        + github.com/m-mizutani/gomodtrace
 ```
 
 ## Install
