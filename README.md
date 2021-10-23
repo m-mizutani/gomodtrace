@@ -16,7 +16,7 @@ github.com/kr/text@v0.1.0
 ## Install
 
 ```sh
-$ go get
+$ go get github.com/m-mizutani/gomodtrace
 ```
 
 ## Usage
